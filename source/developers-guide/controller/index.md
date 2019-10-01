@@ -217,6 +217,9 @@ class ExtendListing implements SubscriberInterface
 }
 ```
 
+Since Shopware 5.6 it is also possible to extend or exchange Shopware controllers over the DI Container. You can find a example for decorating a service [here](https://developers.shopware.com/developers-guide/plugin-quick-start/#decorate-a-service).
+
+
 In addition to that, you can also extend `public` and `protected` methods in any controller using the Shopware hook system.
 
 ## Controllers and caching
@@ -233,7 +236,7 @@ Additional in detail information about the HTTP cache can be found [here](https:
 
 ## SEO
 Technical controller URLs like `http://my-shop.com/frontend/test/index` are, in most cases, not what you want to have.
-For that reason, Shopware supports the definition of [custom SEO URLs](http://en.community.shopware.com/SEO-guide_detail_1424.html#Using_the_.22Special_SEO_URL.22_field).
+For that reason, Shopware supports the definition of [custom SEO URLs](https://developers.shopware.com/blog/2017/07/24/seo-urls-in-plugins/).
 
 ## Example
 You can find a simple controller plugin example <a href="{{ site.url }}/exampleplugins/SwagController.zip">here</a>.

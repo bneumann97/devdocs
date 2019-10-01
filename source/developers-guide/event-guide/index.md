@@ -110,7 +110,7 @@ class Shopware_Controllers_Frontend_SwagEvents extends Enlight_Controller_Action
             'SwagEvent_Controller_indexAction', // give the event a unique name and add the payload
             [
                 'payload' => 123,
-                'payload2' => 'more Payload'
+                'payload2' => 'more Payload',
             ]
         );
         
@@ -137,7 +137,7 @@ $this->container->get('events')->notify(
     'SwagEvent_Controller_Index_After_Do_Some_Magic',
     [
         'payload' => 123,
-        'payload2' => 'more Payload'
+        'payload2' => 'more Payload',
     ]
 );
 ```
@@ -194,8 +194,8 @@ $this->container->get('events')->notify(
     'SwagEvent_Controller_notifyAction',
     [
         'payload' => 123,
-        'payload2' => 'more Payload'
-        'yourPayload' => 'LoremIpsum' 
+        'payload2' => 'more Payload',
+        'yourPayload' => 'LoremIpsum', 
     ]
 );
 ```
@@ -675,7 +675,8 @@ will allow you to literally "hook" into an existing function and execute your co
 
 Hooks are very powerful - but also very tightly bound to our internal code. As such, events should always be used 
 whenever possible, and hooks should only be used as a last resort. For that same reason, we don't allow hooks on every 
-class, but only for controllers, core classes and repositories. Usually you will recognize hooks by the
+class, but only for controllers, core classes and repositories. 
+Since Shopware 5.6 every hookable class implements the `Enlight_Hook` interface. Usually you will recognize hooks by the
 `FQN::METHOD::TYPE` syntax, e.g. `sBasket::sGetBasket::after`. Valid types are `before`, `replace` and `after`.
 There is a more detailed [blog post](https://developers.shopware.com/blog/2015/06/09/understanding-the-shopware-hook-system/)
 about hooks in Shopware and an [event list](/developers-guide/event-list/).

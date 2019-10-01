@@ -12,7 +12,9 @@
     {% endblock %}
 
     {% if page.menu_chapter %}
-        <meta name="robots" content="noindex" />
+    <meta name="robots" content="noindex" />
+    {% elseif page.robots.hide == true %}
+    <meta name="robots" content="noindex, nofollow" />
     {% endif %}
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -103,6 +105,12 @@
                 </li>
 
                 {% endfor %}
+                <li class="navi--chapter navi--backlink-mobile">
+                    <a href="https://en.shopware.com" class="navi--link"><i class="icon--arrow-left"></i> Back to shopware.com</a>
+                </li>
+                <li class="navi--backlink">
+                    <a href="https://en.shopware.com"><i class="icon--arrow-left"></i>Back to shopware.com</a>
+                </li>
             </ul>
         </div>
     </nav>

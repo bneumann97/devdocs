@@ -126,19 +126,21 @@ subgroup: REST API
 
 ## Billing
 
-* **Model:** Shopware\Models\Customer\Billing
-* **Table:** s_user_billingaddress
+* **Model:** Shopware\Models\Order\Billing
+* **Table:** s_order_billingaddress
 
 ### Structure
 
 | Field               | Type                  | Original object                                 |
 |---------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
+| orderId             | integer (foreign key) |                                                 |
 | customerId             | integer (foreign key) |                                                 |
 | countryId             | integer (foreign key) | **[Country](#country)**                         |
 | stateId             | integer (foreign key) |                                                 |
 | company              | string                  |                                                    |
 | department          | string                  |                                                    |
+| title                | string                  |                                                    |
 | salutation          | string                  |                                                    |
 | number              | string                  |                                                    |
 | firstName              | string                  |                                                    |
@@ -146,23 +148,26 @@ subgroup: REST API
 | street              | string                  |                                                    |
 | zipCode              | string                  |                                                    |
 | city                  | string                  |                                                    |
+| additionalAddressLine1 | string                  |                                                    |
+| additionalAddressLine2 | string                  |                                                    |
 | phone                  | string                  |                                                    |
-| fax                  | string                  |                                                    |
 | vatId                  | string                  |                                                    |
+| country              | object                  |    **[Country](#country)**                           |
+| state              | object/null                  |    **[State](#state)**      |
 | birthday              | date/time              |                                                    |
 | attribute              | object                  |    **[BillingAttribute](#billing-attribute)**      |
 
 ## Billing Attribute
 
-* **Model:** Shopware\Models\Attribute\CustomerBilling
-* **Table:** s_user_billingaddress_attributes
+* **Model:** Shopware\Models\Attribute\OrderBilling
+* **Table:** s_order_billingaddress_attributes
 
 ### Structure
 
 | Field               | Type                  | Original object                                 |
 |---------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
-| customerBillingId      | integer (foreign key) |                                                 |
+| orderBillingId      | integer (foreign key) |                                                 |
 | text1                  | string                  |                                                    |
 | text2                  | string                  |                                                    |
 | text3                  | string                  |                                                    |
@@ -399,11 +404,29 @@ subgroup: REST API
 | bindTimeFrom           | integer                  |                                                 |
 | bindTimeTo            | integer                  |                                                 |
 | bindInStock            | integer                  |                                                 |
+| bindLastStock            | integer                  |                                                 |
 | bindWeekdayFrom        | integer                  |                                                 |
-| bindPriceTo            | integer                  |                                                 |
+| bindWeekdayTo        | integer                  |                                                 |
+| bindWeightFrom        | decimal                  |                                                 |
+| bindWeightTo        | decimal                  |                                                 |
+| bindPriceFrom        | decimal                  |                                                 |
+| bindPriceTo            | decimal                  |                                                 |
 | bindSql                | string                  |                                                 |
 | statusLink            | string                  |                                                 |
 | calculationSql         | string                  |                                                 |
+| attribute         | object/null                  | **[DispatchAttribute](#dispatch-attribute)**        |
+
+## Dispatch Attribute
+
+* **Model:** Shopware\Models\Attribute\Dispatch
+* **Table:** s_premium_dispatch_attributes
+
+### Structure
+
+| Field               | Type                  | Original object                                 |
+|---------------------|-----------------------|-------------------------------------------------|
+| id                    | integer (primary key) |                                                 |
+| dispatchId      | integer (foreign key) |                                                 |
 
 ## Document
 
@@ -439,7 +462,7 @@ subgroup: REST API
 
 ## Document Type
 
-* **Model:** Shopware\Models\Order\Document\Type
+* **Model:** Shopware\Models\Document\Document
 * **Table:** s_order_documents
 
 ### Structure
@@ -518,6 +541,12 @@ subgroup: REST API
 | extension             | string                |                                                       |
 | parentId              | integer               |                                                         |
 | mediaId               | integer               | **[Media](../api-resource-media/)**                    |
+
+<div class="alert alert-info">
+
+The field `path` has to be the local path to the image, seen from the root of the Shopware installation. There is an additional, internal helper field `link`, which allows to supply a URL that is being downloaded and converted to the `path` field internally. See the [product examples](https://developers.shopware.com/developers-guide/rest-api/examples/article/#further-examples] for an example.
+
+</div>
 
 ## Link
 
@@ -625,7 +654,7 @@ subgroup: REST API
 | Field               | Type                  | Original object                                 |
 |---------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
-| description            | string                  |                                                 |
+| name            | string                  |                                                 |
 | position              | integer                  |                                                 |
 | group                    | string                  |                                                 |
 | sendMail              | boolean                  |                                                 |
@@ -697,6 +726,21 @@ subgroup: REST API
 | iban                  | string                  |                                                 |
 | amount              | string                  |                                                 |
 | createdAt              | date/time              |                                                 |
+
+## Payment Status
+
+* **Model:** Shopware\Models\Order\Status
+* **Table:** s_core_states
+
+### Structure
+
+| Field               | Type                  | Original object                                 |
+|---------------------|-----------------------|-------------------------------------------------|
+| id                    | integer (primary key) |                                                 |
+| name            | string                  |                                                 |
+| position              | integer                  |                                                 |
+| group                    | string                  |                                                 |
+| sendMail              | boolean                  |                                                 |
 
 ## Price
 
@@ -795,19 +839,21 @@ subgroup: REST API
 
 ## Shipping
 
-* **Model:** Shopware\Models\Customer\Shipping
-* **Table:** s_user_shippingaddress
+* **Model:** Shopware\Models\Order\Shipping
+* **Table:** s_order_shippingaddress
 
 ### Structure
 
 | Field               | Type                  | Original object                                 |
 |---------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
-| customerId             | integer (foreign key) | **[Customer](../api-resource-customer/)**       |
+| orderId                    | integer (primary key) |                                                 |
+| customerId             | integer (foreign key) | **[Customer](#customer)**       |
 | countryId             | integer (foreign key) | **[Country](#country)**                         |
 | stateId             | integer (foreign key) | **[State](#state)**                             |
 | company              | string                  |                                                    |
 | department          | string                  |                                                    |
+| title               | string                  |                                                    |
 | salutation          | string                  |                                                    |
 | number              | string                  |                                                    |
 | firstName              | string                  |                                                    |
@@ -815,19 +861,23 @@ subgroup: REST API
 | street              | string                  |                                                    |
 | zipCode              | string                  |                                                    |
 | city                  | string                  |                                                    |
-| attribute              | object                  |    **[SippingAttribute](#shipping-attribute)**        |
+| additionalAddressLine1 | string                  |                                                    |
+| additionalAddressLine2 | string                  |                                                    |
+| country              | object                  |    **[Country](#country)**        |
+| state              | object                  |    **[State](#state)**        |
+| attribute              | object                  |    **[ShippingAttribute](#shipping-attribute)**        |
 
 ## Shipping Attribute
 
-* **Model:** Shopware\Models\Attribute\CustomerShipping
-* **Table:** s_user_shippingaddress_attributes
+* **Model:** Shopware\Models\Attribute\OrderBilling
+* **Table:** s_order_shippingaddress_attributes
 
 ### Structure
 
 | Field               | Type                  | Original object                                 |
 |---------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
-| customerShippingId  | integer (foreign key) |                                                 |
+| orderShippingId  | integer (foreign key) |                                                 |
 | text1                  | string                  |                                                    |
 | text2                  | string                  |                                                    |
 | text3                  | string                  |                                                    |
@@ -855,7 +905,6 @@ subgroup: REST API
 | baseUrl              | string                  |                                                 |
 | hosts                  | string                  |                                                 |
 | secure              | boolean                  |                                                 |
-| alwaysSecure          | boolean                  |                                                 |
 | secureHost          | string                  |                                                 |
 | secureBasePath      | string                  |                                                 |
 | default              | boolean                  |                                                 |
@@ -886,7 +935,7 @@ subgroup: REST API
 | Field                 | Type                  | Original object                                 |
 |-----------------------|-----------------------|-------------------------------------------------|
 | id                    | integer (primary key) |                                                 |
-| countryId             | integer (foreign key) | **[Country](../api-resource-countries/)**       |
+| countryId             | integer (foreign key) | **[Country](#country)**       |
 | position              | integer               |                                                 |
 | name                  | string                |                                                 |
 | shortCode             | string                |                                                 |

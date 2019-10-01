@@ -97,7 +97,7 @@ is called. In the app.js we add our own stores, models etc.
     }
  ```
  The __install()__ method creates a new widget Entity and adds it to our plugin. It is important to set the same
- __name__ as in our view alias(`Resources/views/backend/index/swag_last_registrations/view/main.js`)
+ __name__ as in our view alias(`Resources/views/backend/index/swag_last_registrations/view/main.js`) as well as adding a snippet for this __name__ under `Resources/snippets/backend/widget/labels.ini`.
 
 `uninstall()`
 ```
@@ -157,7 +157,7 @@ class Shopware_Controllers_Backend_SwagLastRegistrationsWidget extends Shopware_
     }
 }
 ```
-The controller has only an __getLastRegistrationsAction__ function which creates an sql query to fetch the last registered users and adds them to the view.
+The controller has only an __listAction__ function which creates an sql query to fetch the last registered users and adds them to the view.
 
 ## ExtJS Part ##
 ### Resources/views/backend/index/swag_last_registrations/app.js
@@ -305,6 +305,7 @@ The rest should be self explanatory. For more help take a look at the __ExtJS do
 
 ### Resources/views/backend/index/swag_last_registrations/store/account.js
 ```
+//
 Ext.define('Shopware.apps.Index.swagLastRegistrationsWidget.store.Account', {
     /**
      * Extends the default Ext Store
@@ -333,6 +334,7 @@ Ext.define('Shopware.apps.Index.swagLastRegistrationsWidget.store.Account', {
 
 ### Resources/views/backend/index/swag_last_registrations/model/account.js
 ```
+//
 Ext.define('Shopware.apps.Index.swagLastRegistrationsWidget.model.Account', {
 
     extend: 'Ext.data.Model',
